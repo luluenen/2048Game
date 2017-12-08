@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
+
 using namespace std;
 
 class Game{
@@ -45,22 +47,25 @@ void Game::init()
 
 
 void Game::randseek()
-{
-	vector vect;
+{	
+	vector<int> myvector;
 	for (int i=0; i<4; i++){
 		for (int j=0; j<4; j++){
-			if (grid[i][j]!=0){
-					vect.add(4*i+j);
-				}
+			if (grid[i][j]==0){
+				myvector.push_back(4*i+j);
+			}
 		}
 	}
-	index=rand()*vect.length()
-	i=vect[index]
-	if (rand()<0.9){
-		grid[i/4][i%4]=2
+	
+	int index;
+	index=rand()%(myvector.size());
+	int i;
+	i=myvector[index];
+	if (((double) rand()/(RAND_MAX))<0.9){
+		grid[i/4][i%4]=2;
 	}
 	else{
-		grid[i/4][i%4]=4
+		grid[i/4][i%4]=4;
 	}
 }
 
@@ -69,10 +74,12 @@ void Game::randseek()
 
 void Game::displayScreen()
 {	
+	system("clear");
+	
 	if(end == false){
 			
 		cout<<"Welcome to 2048 game, enjoy your game"<<endl;			
-		cout<<"SCORE::"<< score <<" \n\n";
+		cout<<"SCORE::"<< score <<" \n\n\n\n";
 			
 			for(int i=0;i<4;i++)
 			{
@@ -96,6 +103,7 @@ void Game::displayScreen()
 		cout<<"End of game, thank you"<<endl;			
 		
 	}
+
 		
 }
 
@@ -156,5 +164,5 @@ int main(int argc, char *argv[])
 		exec.getKeyPress();
 		cout<< exec.getkp() << endl;
 	}
-	
+	return 0;
 }
