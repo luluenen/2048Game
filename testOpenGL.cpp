@@ -11,6 +11,7 @@ public:
 	void getKeyPress();
 	string getkp() const {return keyPress;}
 	bool checkEndGame();
+	void randseek();
 	
 	void move_grid();// "move_order = LEFT, RIGHT, UP, DOWN"
 	
@@ -37,8 +38,33 @@ void Game::init()
 			grid[i][j] = 0;
 		}
 	}
+	randseek();
+	randseek();
 	score = 0;
 }
+
+
+void Game::randseek()
+{
+	vector vect;
+	for (int i=0; i<4; i++){
+		for (int j=0; j<4; j++){
+			if (grid[i][j]!=0){
+					vect.add(4*i+j);
+				}
+		}
+	}
+	index=rand()*vect.length()
+	i=vect[index]
+	if (rand()<0.9){
+		grid[i/4][i%4]=2
+	}
+	else{
+		grid[i/4][i%4]=4
+	}
+}
+
+
 
 
 void Game::displayScreen()
@@ -80,6 +106,8 @@ bool Game::checkEndGame(){
 			if(grid[i][j] != 0){
 				count ++;
 			}
+		}
+	}
 	if (count==16){
 		
 		for(int i=0; i<4; i++){
@@ -114,6 +142,7 @@ bool Game::checkEndGame(){
 			}
 		}
 	}
+	return true;
 }
 
 
