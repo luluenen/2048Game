@@ -2,28 +2,47 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
+#include <cstdlib>
+#include <cstdio>
 
-//每次moveLeft(int i)，i对应那一行的index。白天你把这四个方法，用键盘检测出来，同时刷新。
-//我写到三点才搞完的，明天晚一点不准欺负我！
-//还有你的密码也太容易猜到了！
 using namespace std;
+
+string randWalk()
+{
+	double ratio = (double) rand()/(RAND_MAX);
+	string keyPress;
+	if (ratio <0.25){
+		keyPress = "w";
+	}
+	else if(ratio>=0.25 && ratio<0.5){
+		keyPress = "s";
+	}
+	else if(ratio>=0.5 && ratio<0.75){
+		keyPress = "a";
+	} 
+	else if(ratio>=0.75 && ratio<1){
+		keyPress = "d";
+	}
+	return keyPress;
+	
+}
 
 class Game{
 
 public:
-	void init() ;
+	void init();
 	void displayScreen();
-	void getKeyPress();
+	void setKeyPress();
 	string getkp() const {return keyPress;}
 	void checkEndGame();
-	void randseek();
+	void randSeek();
 	void moveUp(int j);
 	void moveDown(int j);
 	void moveLeft(int i);
 	void moveRight(int i);
 	void displayScreenEnd();
 	void displayScreenQuit();
-	void move_grid();// "move_order = LEFT, RIGHT, UP, DOWN"
+	void moveGrid();// "move_order = LEFT(a), RIGHT(d), UP(w), DOWN(s)"
 	
 private:
 	int grid[4][4];
@@ -34,11 +53,9 @@ private:
 	const int microseconds=100;
 };
 
-void Game::getKeyPress()
+void Game::setKeyPress()
 {
-  system("stty raw");
-  cin>>keyPress;
-  system("stty cooked");
+  keyPress = randWalk();
 }
 
 
@@ -49,8 +66,8 @@ void Game::init()
 			grid[i][j] = 0;
 		}
 	}
-	randseek();
-	randseek();
+	randSeek();
+	randSeek();
 	score = 0;
 	for (int i=0;i<2;i++){
 		checkEndVector[i]=0;
@@ -58,7 +75,7 @@ void Game::init()
 }
 
 
-void Game::randseek()
+void Game::randSeek()
 {	
 	vector<int> myvector;
 	for (int i=0; i<4; i++){
@@ -81,7 +98,8 @@ void Game::randseek()
 	}
 }
 
-void Game::move_grid(){
+void Game::moveGrid()
+{
 	int tempGrid[4][4];
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
@@ -105,7 +123,7 @@ void Game::move_grid(){
 		
 		
 		if (!equalGrid){
-			randseek();
+			randSeek();
 			displayScreen();
 			checkEndVector[0]=0;
 			checkEndVector[1]=0;
@@ -115,7 +133,7 @@ void Game::move_grid(){
 			}
 	}
 	
-	if (keyPress == "d"){
+	else if (keyPress == "d"){
 		for(int i=0; i<4; i++){
 			moveRight(i);
 		}
@@ -132,7 +150,7 @@ void Game::move_grid(){
 		
 		
 		if (!equalGrid){
-			randseek();
+			randSeek();
 			displayScreen();
 			checkEndVector[0]=0;
 			checkEndVector[1]=0;
@@ -142,7 +160,7 @@ void Game::move_grid(){
 			}
 		
 	}
-	if (keyPress == "s"){
+	else if (keyPress == "s"){
 		for(int i=0; i<4; i++){
 			moveDown(i);
 		}
@@ -158,7 +176,7 @@ void Game::move_grid(){
 		
 		
 		if (!equalGrid){
-			randseek();
+			randSeek();
 			displayScreen();
 			checkEndVector[0]=0;
 			checkEndVector[1]=0;
@@ -167,7 +185,7 @@ void Game::move_grid(){
 			checkEndVector[1]=1;
 			}
 	}
-	if (keyPress == "a"){
+	else if (keyPress == "a"){
 		for(int i=0; i<4; i++){
 			moveLeft(i);
 		}
@@ -183,7 +201,7 @@ void Game::move_grid(){
 		
 		
 		if (!equalGrid){
-			randseek();
+			randSeek();
 			displayScreen();
 			checkEndVector[0]=0;
 			checkEndVector[1]=0;
@@ -192,7 +210,7 @@ void Game::move_grid(){
 			checkEndVector[0]=1;
 			}
 	}
-	if (keyPress == "r"){
+	else if (keyPress == "r"){
 		init();
 		displayScreen();
 	}
@@ -475,14 +493,16 @@ void Game::moveDown(int j)
 	}
 }
 
-void Game::displayScreenQuit(){
+void Game::displayScreenQuit()
+{
 
 	system("clear");
 	cout<<"Thank you, see you later"<<endl;
 }
 
 
-void Game::displayScreenEnd(){
+void Game::displayScreenEnd()
+{
 
 	system("clear");
 	cout<<"Thank you, see you later"<<endl;
@@ -491,6 +511,7 @@ void Game::displayScreenEnd(){
 void Game::displayScreen()
 {	
 	system("clear");
+	
 	
 	if(end == false){
 			
@@ -523,11 +544,9 @@ void Game::displayScreen()
 		
 }
 
-void Game::checkEndGame(){
-	
-	
+void Game::checkEndGame()
+{	
 	bool count = true;
-	
 	for(int i=0; i<4; i++){
 		for (int j=0; j<4; j++){
 			if(grid[i][j] == 0){
@@ -540,7 +559,6 @@ void Game::checkEndGame(){
 	if (count && checkEndVector[0]==1 && checkEndVector[1]==1){
 		end=true;
 		}
-	
 	/*
 	if (count==16){
 		bool left = false;
@@ -574,7 +592,7 @@ void Game::checkEndGame(){
 			
 		}*/
 	}
-
+	
 
 
 int main(int argc, char *argv[])
@@ -584,11 +602,9 @@ int main(int argc, char *argv[])
     exec.init();
     exec.displayScreen();
     while(1){
-		
-		
-		exec.getKeyPress();
-		cout<< exec.getkp() << endl;
-		exec.move_grid();
+		usleep(100000);
+		exec.setKeyPress();
+		exec.moveGrid();
 		exec.checkEndGame();
 	}
 	return 0;
