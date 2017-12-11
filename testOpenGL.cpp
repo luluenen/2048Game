@@ -3,9 +3,6 @@
 #include <vector>
 #include <unistd.h>
 
-//每次moveLeft(int i)，i对应那一行的index。白天你把这四个方法，用键盘检测出来，同时刷新。
-//我写到三点才搞完的，明天晚一点不准欺负我！
-//还有你的密码也太容易猜到了！
 using namespace std;
 
 class Game{
