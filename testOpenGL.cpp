@@ -55,7 +55,7 @@ void Game::init()
 }
 
 
-void Game::randseek()
+void Game::randSeek()
 {	
 	vector<int> myvector;
 	for (int i=0; i<4; i++){
@@ -78,7 +78,7 @@ void Game::randseek()
 	}
 }
 
-void Game::move_grid(){
+void Game::moveGrid(){
 	int tempGrid[4][4];
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
